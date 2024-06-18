@@ -1,0 +1,12 @@
+langchain
+langchain-community
+#langchain-openai
+langchain-experimental
+neo4j
+# tiktoken
+pypdf
+huggingface_hub
+transformers
+sentence_transformers
+json-repair
+python-dotenv
