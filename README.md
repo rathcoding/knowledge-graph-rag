@@ -4,10 +4,21 @@ This is an **<*ongoing*>** personal project aimed to practice building a pipelin
 
 It is based on [Neo4J - Enhancing the Accuracy of RAG Applications With Knowledge Graphs](https://neo4j.com/developer-blog/enhance-rag-knowledge-graph/?mkt_tok=NzEwLVJSQy0zMzUAAAGTBn-WDr1KcupEPExYL6rh_DaP3R0h5gWQFxWGRm6dXiew5-oAnYBbvXvedknjyhyojNebyUa0ywWZwIkZQRtiJ-9x6k22vY3ru2Ztp7PjlgN5Bbs) article, adapted to use a local LLM instead of the OpenAI API.
 
+> * The Q&A system is not implemented yet...
+
 To run this project you'll need:
-1) A Neo4J instance on [Aura](https://neo4j.com/cloud/aura/) running.
+1) [Docker](https://www.docker.com/) installed and running on your machine (docker-compose.yml file included in the repository).
 2) [Ollama](https://ollama.com/) installed and running on your machine, and a [model](https://ollama.com/library) downloaded.
 3) A Python environment with the required packages installed. You can install them with `pip install -r requirements.txt`.
 
 
-> *Stack:* Python, Ollama, LangChain, Neo4J
+After running the script, check out the Neo4J database at `http://localhost:7474/browser/`:
+```
+MATCH (n)-[r]->(m)
+RETURN n, r, m
+```
+
+You should see all the entities and relationships extracted from the PDFs.
+
+
+> *Stack:* Python, LangChain, Ollama, Neo4J, Docker

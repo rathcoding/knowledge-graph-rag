@@ -1,32 +1,26 @@
-"""
-Based on:
-
-Graph RAG overall idea: [Neo4J - Enhancing the Accuracy of RAG Applications With Knowledge Graphs](https://neo4j.com/developer-blog/enhance-rag-knowledge-graph/?mkt_tok=NzEwLVJSQy0zMzUAAAGTBn-WDr1KcupEPExYL6rh_DaP3R0h5gWQFxWGRm6dXiew5-oAnYBbvXvedknjyhyojNebyUa0ywWZwIkZQRtiJ-9x6k22vY3ru2Ztp7PjlgN5Bbs)
-
-To run the LLM locally using Ollama: [Combining Langchain & Ollama | Local LLM/AI series](https://youtu.be/Mv2t505oHiM?si=xrIvlLDbUVQNmLJj)
-* Download [Ollama](https://ollama.com/download) and run in background
-* Choose the LLM you want to use: [Ollama Models](https://ollama.com/library)
-* Download the model you want to use using the terminal: terminal $ ollama pull <model_name>
-
-To solve the error in the LLMGraphTransformer when using a Local LLM: [StackOverflow](https://stackoverflow.com/questions/78521181/llmgraphtransformer-convert-to-graph-documentsdocuments-attributeerror-str)
-
-Get a Neo4J instance running on [Neo4J Aura](https://neo4j.com/cloud/aura/)
-"""
-
-# START OF THE DATA PIPELINE
 import os
+import logging
 import dotenv
 dotenv.load_dotenv()
+logging.basicConfig(level=logging.INFO)
+logging.info('Starting the data pipeline...')
+
+# START OF THE DATA PIPELINE
+logging.info('Getting list of PDF files from "files" folder')
 
 # Get list of PDF files from 'files' folder
+logging.info('Getting list of PDF files from "files" folder')
 files_path = 'files'
 files = [files_path+'/'+file for file in os.listdir(files_path) if file.endswith('.pdf')]
+logging.info(f'List of PDF files: {files}')
 
 # Instantiate the token text splitter
+logging.info('Instantiating the token text splitter')
 from langchain.text_splitter import TokenTextSplitter
 splitter = TokenTextSplitter(chunk_size=512, chunk_overlap=24)
 
 # Split the PDFs into chunks as Documents
+logging.info('Splitting the PDFs into chunks as Documents')
 from langchain_community.document_loaders import PyPDFLoader
 documents = []
 
@@ -37,14 +31,17 @@ for file in files:
     files_documents = pdf_loader.load_and_split(text_splitter=splitter)
     # Add the Documents to the list
     documents.extend(files_documents)
+    logging.info(f'Loaded and split {file} into {len(files_documents)} Documents')
 
 # Instantiate LLM to use with the LLMGraphTransformer
+logging.info('Instantiating LLM to use with the LLMGraphTransformer')
 from langchain_community.llms import Ollama
 llm=Ollama(model='llama3', temperature=0)
 
 # To use a local LLM we need to create a chat_prompt to solve the AttributeError from the LLMGraphTransformer
 
 # Create a system message to provide the LLM with the instructions
+logging.info('Creating a chat_prompt to provide the LLM with the instructions and examples')
 from langchain_experimental.graph_transformers.llm import SystemMessage
 system_prompt = """
 You are a data scientist working for the police and that is building a knowledge graph database. 
@@ -273,24 +270,29 @@ chat_prompt = ChatPromptTemplate.from_messages(
 )
 
 # Instantiate the LLMGraphTransformer that will extract the entities and relationships from the Documents
+logging.info('Instantiating the LLMGraphTransformer that will extract the entities and relationships from the Documents')
 from langchain_experimental.graph_transformers import LLMGraphTransformer
 llm_transformer = LLMGraphTransformer(llm=llm, prompt=chat_prompt)
 
 # Convert the Documents into Graph Documents
 # This is the heavy computation part...
+logging.info('Converting the Documents into Graph Documents...')
 graph_documents = llm_transformer.convert_to_graph_documents(documents)
 
 # Instantiate the Neo4JGraph to persist the data
+logging.info('Instantiating the Neo4JGraph to persist the data')
 from langchain_community.graphs import Neo4jGraph
 graph = Neo4jGraph()
 
 # Persist the Graph Documents into the Neo4JGraph
+logging.info('Persisting the Graph Documents into the Neo4JGraph')
 graph.add_graph_documents(
   graph_documents,
   baseEntityLabel=True,
   include_source=True
 )
 
+logging.info('Data pipeline completed successfully!')
 # END OF THE DATA PIPELINE
 
 
