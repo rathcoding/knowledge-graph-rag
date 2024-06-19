@@ -5,9 +5,6 @@ dotenv.load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logging.info('Starting the data pipeline...')
 
-# START OF THE DATA PIPELINE
-logging.info('Getting list of PDF files from "files" folder')
-
 # Get list of PDF files from 'files' folder
 logging.info('Getting list of PDF files from "files" folder')
 files_path = 'files'
@@ -293,10 +290,3 @@ graph.add_graph_documents(
 )
 
 logging.info('Data pipeline completed successfully!')
-# END OF THE DATA PIPELINE
-
-
-
-# START OF THE CHATBOT WITH RAG
-# To be coded and experimented with...
-# END OF THE CHATBOT WITH RAG
