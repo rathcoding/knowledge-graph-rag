@@ -8,6 +8,10 @@ To run this project you'll need:
 1) [Docker](https://www.docker.com/) installed and running on your machine (docker-compose.yml file included in the repository).
 2) [Ollama](https://ollama.com/) installed and running on your machine, and a [model](https://ollama.com/library) downloaded.
 3) A Python environment with the required packages installed. You can install them with `pip install -r requirements.txt`.
+4) A .env file with the following variables:
+```
+NEO4J_URI=bolt://localhost:7687
+```
 
 After running the pipeline script, check out the Neo4J database at `http://localhost:7474/browser/`:
 ```
@@ -17,7 +21,10 @@ RETURN n, r, m
 
 You should see all the entities and relationships extracted from the PDFs.
 
-> The Q&A system is not implemented yet...
+![result](./files/result.png)
+
+
+> The Graph RAG is not implemented yet...
 
 
 > *Stack:* Python, LangChain, Ollama, Neo4J, Docker
