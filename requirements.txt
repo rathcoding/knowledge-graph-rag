@@ -1,12 +1,11 @@
+# pip install --upgrade pip
+python-dotenv
+neo4j
+pypdf
 langchain
 langchain-community
-#langchain-openai
 langchain-experimental
-neo4j
-# tiktoken
-pypdf
-huggingface_hub
+langchain-huggingface
 transformers
 sentence_transformers
 json-repair
-python-dotenv

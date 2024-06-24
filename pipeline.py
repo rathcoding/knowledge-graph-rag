@@ -33,7 +33,7 @@ for file in files:
 # Instantiate LLM to use with the LLMGraphTransformer
 logging.info('Instantiating LLM to use with the LLMGraphTransformer')
 from langchain_community.llms import Ollama
-llm=Ollama(model='llama3', temperature=0)
+llm=Ollama(model='llama3', temperature=0.0)
 
 # To use a local LLM we need to create a chat_prompt to solve the AttributeError from the LLMGraphTransformer
 
@@ -41,7 +41,7 @@ llm=Ollama(model='llama3', temperature=0)
 logging.info('Creating a chat_prompt to provide the LLM with the instructions and examples')
 from langchain_experimental.graph_transformers.llm import SystemMessage
 system_prompt = """
-You are a data scientist working for the police and that is building a knowledge graph database. 
+You are a data scientist working for the police and you are building a knowledge graph database. 
 Your task is to extract information from data and convert it into a knowledge graph database.
 Provide a set of Nodes in the form [head, head_type, relation, tail, tail_type].
 It is important that the head and tail exists as nodes that are related by the relation.
