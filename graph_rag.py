@@ -25,7 +25,7 @@ logging.info('='*50)
 def main():
     logging.info('Type "exit" to quit the program.')
     while True:
-        question = input('Ask me a question: ')
+        question = input('\nAsk me a question: ')
         if question == 'exit':
             break
         result = chain.invoke({"query": question})

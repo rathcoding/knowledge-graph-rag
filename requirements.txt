@@ -5,7 +5,7 @@ pypdf
 langchain
 langchain-community
 langchain-experimental
-langchain-huggingface
+# langchain-huggingface
 transformers
-sentence_transformers
+sentence-transformers
 json-repair
